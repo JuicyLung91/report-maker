@@ -18,8 +18,12 @@ class CreateWeeksTable extends Migration
             $table->increments('IDweeks');
             $table->unsignedInteger('startDate');
             $table->unsignedInteger('endDate');
+            $table->unsignedInteger('schoolDate');
+            $table->string('schoolDayName');
+            $table->integer('workingDays');
             $table->foreign('startDate')->references('IDdates')->on('dates');
             $table->foreign('endDate')->references('IDdates')->on('dates');
+            $table->foreign('schoolDate')->references('IDdates')->on('dates');
         });
         
     }
