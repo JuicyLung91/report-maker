@@ -8,6 +8,10 @@ use App\weeks;
 
 class date extends Model
 {
+
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
+    
     //add Period - add one week every 7 days https://scotch.io/tutorials/easier-datetime-in-laravel-and-php-with-carbon
     //check if a days is already set
     //add new date 
