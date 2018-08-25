@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\date;
+use App\invalidReason;
 
 class daysAndWeeks extends Controller
 {
@@ -22,5 +23,13 @@ class daysAndWeeks extends Controller
         print_r($request->all());
         print_r($request->input('startdate'));
         print_r($period);
+    }
+
+    public function createInvalid (Request $request) {
+        foreach ($request->input('invalidDate') as $invalid) {
+            $invalidReason = new invalidReason;
+            $invalidReason->createReson($invalid['date'], $invalid['reason']);
+            //@TODO: call model foreach invalid date and save to db
+        }
     }
 }
