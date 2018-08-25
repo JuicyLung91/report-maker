@@ -15,8 +15,12 @@ class daysAndWeeks extends Controller
      * @param schooldays array
      * 
      */
-    public function addPeriod () {
-        $period = date::createPeriod('31-07-2017', '01-08-2018');
+    public function createPeriod (Request $request) {
+        $schoolday = 'donnerstag';
+        $period = date::createPeriod($request->input('startdate'), $request->input('enddate'), $request->input('schoolday'));
+        echo '<pre>';
+        print_r($request->all());
+        print_r($request->input('startdate'));
         print_r($period);
     }
 }
