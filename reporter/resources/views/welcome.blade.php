@@ -66,9 +66,9 @@
     </head>
     <body>
         <ul>
-            @foreach ($dates as $date)
+            @foreach ($weeks as $week)
 
-                <li>{{$date->date}}</li>
+                <li>{{$week->startDate}}</li>
 
             @endforeach
         </ul>
