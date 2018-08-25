@@ -16,7 +16,7 @@ Route::get('/', 'startPage@startPage');
 
 Route::get('period/create', 'daysAndWeeks@createPeriod')->name('period.create');
 Route::get('day/create', 'daysAndWeeks@createDays');
-Route::get('invalidDay/create', 'daysAndWeeks@create');
+Route::get('invalidDay/create', 'daysAndWeeks@createInvalid')->name('invalid.create');
 Route::get('invalidDay/update', 'daysAndWeeks@updateInvalid');
 
 Route::get('week/create', 'daysAndWeeks@createWeek');
