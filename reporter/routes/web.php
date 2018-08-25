@@ -11,7 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    $dates = DB::table('dates')->get();
-    return view('welcome', ['dates' => $dates]);
-});
+
+Route::get('/', 'startPage@startPage');
+
+Route::get('period/create', 'daysAndWeeks@createPeriod')->name('period.create');
+Route::get('day/create', 'daysAndWeeks@createDays');
+Route::get('invalidDay/create', 'daysAndWeeks@create');
+Route::get('invalidDay/update', 'daysAndWeeks@updateInvalid');
+
+Route::get('week/create', 'daysAndWeeks@createWeek');
+Route::get('week/{id}', 'daysAndWeeks@createWeek');
+
+Route::get('task/create', 'tasks@createTask');
+Route::get('task/update', 'tasks@addTask');
+
+Route::get('taskHours/create', 'tasks@addTask');
