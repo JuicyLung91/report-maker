@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\date;
 use App\weeks;
+use App\invalidDays;
 
 class invalidReason extends Model
 {
@@ -43,12 +44,19 @@ class invalidReason extends Model
       $daysUntilSunday = date::daysUntilLastWeekDay($date);
       $sunday = Carbon::parse($date)->addDays($daysUntilSunday)->toDateString();
       $sundayDateID = $newDate->where('date', $sunday)->first();
+      //@TODO: Return error if week is not found. week doesnt exists
       $sundayDateID = $sundayDateID->IDdates;
       
       if ($sundayDateID) {
         $week = new weeks;
         $week = $week->where('endDate', $sundayDateID)->first();
-        echo  $week;
+        $weekInDB = $week->IDweeks;
+        echo $weekInDB;
+        $invalidDay = new invalidDays;
+        $invalidDay->weeksID = $weekInDB;
+        $invalidDay->reason = $reasonInDB;
+        $invalidDay->date = $dateInDB;
+        $invalidDay->save();
       }
       
       //@TODO
