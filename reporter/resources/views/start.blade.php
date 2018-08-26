@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+
     <div class="container">
         <div class="row">
             <div class="col-sm-9">
@@ -65,11 +66,35 @@
                     <button class="btn btn-primary" type="submit">Zeitraum erstellen</button>
                   </form> 
 
-              Gesperrte Tage
+                  <form action="{{ route('invalid.create') }}" method="GET" id="invalidDays" class="needs-validation" novalidate>
+                    <h4 class="display-4">Gesperrte Tage </h4>
+                    <p class="h4">Urlaubstage, Feiertage, Krankheitstage etc.</p>
+                    <br>
+                    <div class="dynamic-elements">
+                        <div class="row">
+                            <label class="col">
+                                Datum
+                                <input type="date" class="form-control" name="invalidDate[0][date]" placeholder="Datum">
+                            </label>
+                            
+                            <label class="col">
+                                Grund
+                                <input type="text" class="form-control" name="invalidDate[0][reason]" placeholder="Krankheit/Urlaub...">
+                            </label>
+                            <label class="col align-self-center">
+                                <button type="button" class="btn btn-primary add-one">+</button>
+                            </label>
+                        </div>
+                    </div>
+                    <br><br>
+                    <button class="btn btn-primary" type="submit">Gesperrte Tage eintragen</button>
+                 </form>
             </div>
+            
             <div class="col-sm">
-              One of three columns
+             
         </div>
       </div>
+      <script src="js/app.js"></script>
 </body>
 </html>
