@@ -64,7 +64,11 @@ class invalidReason extends Model
     }
 
     /**
-     * read a resons
+     * read a reson
+     * 
+     * 
+
+     
      */
     function readReason () {
 
