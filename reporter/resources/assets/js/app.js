@@ -6,15 +6,18 @@
  */
 
 require('./bootstrap');
-console.log($);
-console.log('test');
+
+
 
 //Clone the hidden element and shows it
 $('.add-one').click(function(){
-  $('.dynamic-elements .row').first().clone().appendTo('.dynamic-elements').show();
-  $('.dynamic-elements .row').last().find('.btn').toggleClass('btn-primary btn-danger delete').text('-');
+  
+  var thisForm = $(this).closest('form');
+  var thisdynamic = $(this).closest('.dynamic-elements');
+  thisdynamic.find('.row').first().clone().appendTo(thisdynamic).show();
+  thisdynamic.find('.row').last().find('.btn').toggleClass('btn-primary btn-danger delete').text('-');
   attach_delete();
-  create_name_attributes();
+  create_name_attributes(thisForm);
 });
 
 
@@ -26,14 +29,22 @@ function attach_delete(){
   });
 }
 
-function create_name_attributes() {
-  $('#invalidDays').find('.row').each(function (index) {
-    var date = $(this).find('input[type="date"]');
-    console.log('date: ', date);
-    var reason = $(this).find('input[type="text"]');
-    console.log('reason: ', reason);
+function create_name_attributes(form) {
+  var data = $(form).data('getname');
+  $(form).find('.row').each(function (index) {
+    console.log('index: ', index);
+    var inputs = $(this).find('input');
+    inputs.each(function() {
+      var getname = $(this).data('getname');
+      $(this).attr('name', data+'['+index+']['+getname+']');
+    });
 
-    $(date).attr('name', 'invalidDate['+index+'][date]');
-    $(reason).attr('name', 'invalidDate['+index+'][reason]');
+    // var date = $(this).find('input[type="date"]');
+    
+    // var reason = $(this).find('input[type="text"]');
+    
+
+    // $(date).attr('name', data+'['+index+'][date]');
+    // $(reason).attr('name', data+'['+index+'][reason]');
   });
 }
