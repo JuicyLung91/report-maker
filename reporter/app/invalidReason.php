@@ -40,27 +40,11 @@ class invalidReason extends Model
       $dateInDB = $dateInDB->IDdates;
       echo $dateInDB;
 
+      $newInvalidDate = new invalidDays;
+      $newInvalidDate->reason = $reasonInDB;
+      $newInvalidDate->date = $dateInDB;
+      $newInvalidDate->save();
 
-      $daysUntilSunday = date::daysUntilLastWeekDay($date);
-      $sunday = Carbon::parse($date)->addDays($daysUntilSunday)->toDateString();
-      $sundayDateID = $newDate->where('date', $sunday)->first();
-      //@TODO: Return error if week is not found. week doesnt exists
-      $sundayDateID = $sundayDateID->IDdates;
-      
-      if ($sundayDateID) {
-        $week = new weeks;
-        $week = $week->where('endDate', $sundayDateID)->first();
-        $weekInDB = $week->IDweeks;
-        echo $weekInDB;
-        $invalidDay = new invalidDays;
-        $invalidDay->weeksID = $weekInDB;
-        $invalidDay->reason = $reasonInDB;
-        $invalidDay->date = $dateInDB;
-        $invalidDay->save();
-      }
-      
-      //@TODO
-      //look for date::daysUntilLastWeekDay add days to date and look for weeks based on the endDate and get id
     }
 
     /**

@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class oneDay extends Model
 {
-    //
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
+
+    protected $fillable = ['weekID', 'date'];
 }

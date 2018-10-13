@@ -5,12 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\weeks;
+use App\oneDay;
 
 class date extends Model
 {
 
     const UPDATED_AT = null;
     const CREATED_AT = null;
+
+    protected $fillable = ['date'];
     
     //add Period - add one week every 7 days https://scotch.io/tutorials/easier-datetime-in-laravel-and-php-with-carbon
     //check if a days is already set
@@ -22,7 +25,7 @@ class date extends Model
      * @param $startdate, $enddate
      *  
      */
-    public static function createPeriod ($startdate, $enddate, $schoolday) {
+    public static function createPeriod ($startdate, $enddate, $schoolday, $trainingYear) {
         setlocale(LC_TIME, 'German');
         $dateFormat = 'Y-m-d';
         $startdate = Carbon::createFromFormat($dateFormat, $startdate);
@@ -35,36 +38,35 @@ class date extends Model
             $day = $day->parse($currentdate)->toDateString();
             $period[] = $day;
         }
-        // $date = new date;
-        // $date->saveDates($period);
+        $newDate = new date;
+        $newDate->saveDates($period);
+        $weeks = array();
         foreach ($period as $singleDayKey => $singleDay) { 
             if (date::getDayOfWeek($singleDay) == 'Montag' || $singleDayKey == 0) {
                 //new week
-                echo '<br>neue Woche<br>';
                 $weekStart = new Carbon;
                 $weekStart = $weekStart->parse($singleDay)->toDateString();
-                echo 'weekstart: '.$weekStart.'<br>';
 
-              
-                
                 $weekEnd = new Carbon;
                 $weekEnd = $weekEnd->parse($singleDay);
+
                 $currentDate = $weekEnd->toDateString();
                 $daysUntilWeekend = date::daysUntilLastWeekDay( $currentDate );
                 $weekEnd = $weekEnd->addDays($daysUntilWeekend)->toDateString();
-                echo 'weekend: '.$weekEnd.'<br>';
-                // $week = new weeks;
-                // $week->
+                $weeks[$weekStart]['start'] = $weekStart;
+                $weeks[$weekStart]['end'] = $weekEnd;
             }
             
             if ( in_array( strtolower(date::getDayOfWeek($singleDay)), $schoolday ) ) {
-                echo 'Schultag: '.date::getDayOfWeek($singleDay).' '.$singleDay;
-            } else {
-                echo 'Arbeitstag: '.date::getDayOfWeek($singleDay).' '.$singleDay;
+                $thisDay = new Carbon;
+                $thisDay = $thisDay->parse($singleDay)->toDateString();
+                $weeks[$weekStart]['schooldays'][] = $singleDay;
             }
-            echo  '<br>';
         }
-
+        $week = new weeks;
+        $week->saveWeeks($weeks, $trainingYear);
+        $oneDay = new date;
+        $oneDay->saveOneDays($period);
 
     }
 
@@ -90,6 +92,9 @@ class date extends Model
     }
 
 
+    
+
+
     /**
      * returns the last day of the week - 'Sonntag' - important if the first week of period doesnt start on monday
      * 
@@ -108,12 +113,51 @@ class date extends Model
         }
     }
 
+    public function getWeekID($date) {
+        $addDays = date::daysUntilLastWeekDay($date);
+        $newDate = new Carbon;
+        $newDate = $newDate->parse($date)->addDays($addDays)->toDateString();
+        $dateID  =  date::where('date', $newDate)->first();
+
+        if ($dateID) {
+            $week = weeks::where('endDate', $dateID->IDdates)->first();
+            if ($week) {
+                return $week->IDweeks;
+
+            } else {
+                return false;
+            }
+        }
+
+    }
+
+    public function getDateID($date) {
+        $dateID  =  date::where('date', $date)->first();
+        return ($dateID) ? $dateID->IDdates : false;
+    }
+
     /**
      * save dates to db
      * 
      * @param $dates array
      */
-    protected function saveDates ($dates) {
-        //echo 'save';
+    public function saveDates ($dates) {
+        foreach ($dates as $date ) {
+            date::updateOrCreate(['date'=>$date]);
+
+        }
     }
+
+
+    public function saveOneDays ($dates) {
+        foreach ($dates as $date ) {
+            if ( $this->getDateID($date) ) {
+                $weekID = $this->getWeekID($date);
+                $dayID = $this->getDateID($date);
+                oneDay::updateOrCreate(['date'=>$dayID,'weekID'=>$weekID]); 
+            }
+        }
+    }
+
+
 }
