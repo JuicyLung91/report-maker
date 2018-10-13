@@ -16,11 +16,9 @@ class CreateInvalidDaysTable extends Migration
         Schema::enableForeignKeyConstraints();
         Schema::create('invalid_days', function (Blueprint $table) {
             $table->increments('IDinvalidDays');
-            $table->unsignedInteger('weeksID');
             $table->unsignedInteger('reason');
             $table->unsignedInteger('date')->unique();
 
-            $table->foreign('weeksID')->references('IDweeks')->on('weeks');
             $table->foreign('reason')->references('IDinvalidReasons')->on('invalid_reasons');
             $table->foreign('date')->references('IDdates')->on('dates');
             
