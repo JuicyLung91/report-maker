@@ -29,11 +29,14 @@ Route::get('invalidDay/update', 'daysAndWeeks@updateInvalid');
 // Route::get('week/{id}', 'daysAndWeeks@createWeek');
 Route::get('weeks', 'daysAndWeeks@showWeeks')->name('weeks.all');
 Route::get('weeks/{id}', 'daysAndWeeks@showOneWeek')->name('weeks.id');
+Route::get('weekPDF/{id}', 'daysAndWeeks@pdfOneWeek')->name('weekpdf.id');
 
 
 
 Route::get('task/create', 'tasksAndHours@createTask')->name('task.create');
+Route::get('task/createSingle', 'tasksAndHours@generateSingleDay')->name('task.createSingle');
+
 Route::get('generateTasks', 'tasksAndHours@generateTasks')->name('tasks.generate');
-Route::get('task/update', 'tasksAndHours@addTask');
+Route::get('task/update', 'tasksAndHours@updateTask')->name('update.tasks');
 
 Route::get('taskHours/create', 'tasks@addTask');

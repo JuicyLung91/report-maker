@@ -13,12 +13,22 @@ class date extends Model
     const UPDATED_AT = null;
     const CREATED_AT = null;
 
+    protected $primaryKey = 'IDdates';
+
     protected $fillable = ['date'];
+
+    protected $table = 'dates';
+
+    public function getReadDateAttribute()	 	 
+    {	 	 
+        
+        return date("d-m-Y", strtotime($this->date) );	 
+    }
     
     //add Period - add one week every 7 days https://scotch.io/tutorials/easier-datetime-in-laravel-and-php-with-carbon
     //check if a days is already set
     //add new date 
-    
+
     /**
      * create a period of dates - calls weeks after every 7 days
      * 
@@ -56,11 +66,12 @@ class date extends Model
                 $weeks[$weekStart]['start'] = $weekStart;
                 $weeks[$weekStart]['end'] = $weekEnd;
             }
-            
-            if ( in_array( strtolower(date::getDayOfWeek($singleDay)), $schoolday ) ) {
-                $thisDay = new Carbon;
-                $thisDay = $thisDay->parse($singleDay)->toDateString();
-                $weeks[$weekStart]['schooldays'][] = $singleDay;
+            if ($schoolday) {
+                if ( in_array( strtolower(date::getDayOfWeek($singleDay)), $schoolday ) ) {
+                    $thisDay = new Carbon;
+                    $thisDay = $thisDay->parse($singleDay)->toDateString();
+                    $weeks[$weekStart]['schooldays'][] = $singleDay;
+                }
             }
         }
         $week = new weeks;
@@ -92,6 +103,10 @@ class date extends Model
     }
 
 
+    static function officialDate($date) {
+        $time = strtotime($date);
+        return date('d. m. Y',$time);
+    }
     
 
 

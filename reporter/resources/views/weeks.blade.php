@@ -12,9 +12,11 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-9">
+          
                 @foreach ($weeks as $week )
                     <div>
-                        <a href="{{ route('weeks.id', ['id'=> $week->IDweeks ]) }}">Woche: {{ $week->IDweeks }}</a>
+                        <a style="padding-right: 25px;" href="{{ route('weeks.id', ['id'=> $week->IDweeks ]) }}">{{ $week->start->read_date }} Woche: {{ $week->IDweeks }}  </a>
+                        <a href="{{ route('weekpdf.id', ['id'=> $week->IDweeks ]) }}">PDF: {{ $week->IDweeks }}</a>
                     </div>
                 @endforeach
             </div>

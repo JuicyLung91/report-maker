@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="">
-    <title>Document</title>
-    <link rel="stylesheet" href="/public/css/app.css">
+    <title>{{$filename}}</title>
                 <style type="text/css">
-                html, body {
-                    font-family: 'Arial', sans-serif;
+                  html, body {
+                    font-family: 'DejaVu Sans', sans-serif;
+                    font-size: 14px;
                 }
                 * {
                     box-sizing: border-box;
@@ -21,6 +17,7 @@
                 }
                 .weekTable {
                     margin-top: 3rem;
+                    width: 94%;
                 }
                 .tg  {
                     border-collapse:collapse;
@@ -94,22 +91,22 @@
                 }
                 table.subTable {
                     border: none;
-                    width: 100%;
+                    width: 110%;
+                    margin-left: -5px;
+                    text-indent: 5px;
                 }
                 .subTable {
                     min-height: 50px;
                 }
                 .subTable td {
                     border: none;
-                    border-top: 1px solid #000;
                     border-bottom: 1px solid #000;
                 }
                 .subTable.tasks td {
                     padding-left: 3px;
+                    padding-right: 8px;
                 }
-                .subTable tr:first-of-type td {
-                    border-top: none;
-                }
+              
                 .subTable tr:last-of-type td {
                     border-bottom: none;
                 }
@@ -127,7 +124,7 @@
                 }
                 .fullWidth {
                     position: relative;
-                    width: 100%;
+                    width: 99%;
                     display: block;
                     height: 65px;
                 }
@@ -152,7 +149,7 @@
                 }
                 .signBox {
                     border: 2px solid #000;
-                    height: 90px;
+                    height: 60px;
                     width: 100%;
                 }
                 .td--noBorder {
@@ -162,84 +159,14 @@
 </head>
 <body>
     
-  
-<div class="container noPrint">
-    <div class="row">
-        <div class="col-sm-9">
-            @foreach ($week['tage'] as $key => $item)
-                <form style="display-none" action="{{ route('update.tasks') }}" data-getname="task" method="GET" data-dayid="{{ $item['ID']}}" class="modal needs-validation" novalidate>
-                    @if ($item['Schultag']) 
-                        <h4 class="display-4">Schultag:</h4>
-                        <input type="hidden" name="schoolday" value="1">
-                    @endif  
-                    <input type="hidden" name="dayid" value="{{ $item['oneDayID']}}">
-                    <?php $c = 0; ?>
-                    @foreach ($item['Aufgaben'] as $key => $dayTasks )
-                    <div class="dynamic-elements">
-                        <div class="row">
-                            <label>
-                                <input class="" data-getname="name" name="task[{{$c}}][name]" value="{{ $key }}">
-                            </label>
-                            <label>
-                                <input class="" data-getname="hour" name="task[{{$c}}][hour]" value="{{ $dayTasks }}">
-                            </label>
-                            
-                            <label class="col align-self-center">
-                                @if ($c == 0)
-                                    <button type="button" class="btn btn-primary add-one">+</button>
-                                @else
-                                    <button type="button" class="btn btn-danger delete">-</button>
-                                @endif
-                            </label>
-                            <br>
-                        </div>
-                    </div>
-                    
-                    <?php $c++; ?>
-                    @endforeach
-                    @if ( count($item['Aufgaben']) == 0 ) 
-                        <div class="dynamic-elements">
-                            <div class="row">
-                                <label>
-                                    <input class="" data-getname="name" name="task[0][name]" value="">
-                                </label>
-                                <label>
-                                    <input class="" data-getname="hour" name="task[0][hour]" value="">
-                                </label>
-                                <label class="col align-self-center">
-                                    <button type="button" class="btn btn-primary add-one">+</button>
-                                </label>
-                            </div>
-                        </div>
-                    @endif
-                    <button class="btn btn-primary" type="submit">Tag Bearbeiten</button>
-                </form>
-            @endforeach
-        </div>
-    </div>
-</div>
+  <div>
 
-    <div class="container noPrint">
-        <div class="row">
-            <div class="col-sm-9">
-                @foreach ($week as $key => $item)
-                @if (is_array($item))
-                        
-                    @else
-                        {{$key}}: {{$item}}<br>
-                    @endif
-                @endforeach
-            </div>
-
-        </div>
-    </div>
-    <div class="din">
         <h2>Berichtsheft</h2>
-        <table style="width: 85%">
+        <table style="width: 95%">
             <tr style="line-height: 1rem">
-                <td style="width: 110px"><b>Name<b></td>
+                <td style="width: 100px"><b>Name<b></td>
                 <td>Roj</td>
-                <td style="width: 160px"><b>Ausbildungsberuf<b></td>
+                <td style="width: 170px"><b>Ausbildungsberuf<b></td>
                 <td>Mediengestalter</td>
             </tr>
             
@@ -264,35 +191,31 @@
                 <td>{{ $week['Wochennummer'] }}</td>
             </tr>
         </table>
-                <table class="tg weekTable" style="undefined;table-layout: fixed;">
-                <colgroup>
-                <col style="width: 207px">
-                <col style="width: 380px">
-                <col style="width: 140px">
-                <col style="width: 228px">
-                <col style="width: 120px">
-                </colgroup>
-                  <tr>
-                    <th class="tg-baqh tg-first"></th>
+
+
+      </div>
+
+
+      <div>
+
+      
+              <table class="tg weekTable">
+               
+                  <tr >
+                    <th style="height: 25px;" class="tg-baqh tg-first"></th>
                     <th class="tg-baqh">Ausbildungsinhalte</th>
                     <th class="tg-baqh">vom</th>
                     <th class="tg-baqh">Zeit in Stunden</th>
                     <th class="tg-baqh">Insgesamt</th>
                   </tr>
 
+                  
                   @foreach ($week['tage'] as $key => $item)
                   <?php $date = $item['Datum']; ?>
                   <?php $school = $item['Schultag']; ?>
                     <tr>
-                        <td class="tg-baqh">{{ $key }} 
-                            <span data-dayid="{{$item['ID']}}" class="noPrint openModal">(E)</span>
-                            <form action="{{ route('task.createSingle') }}" class="noPrint" method="GET" novalidate>
-                                    <input type="hidden" name="date" value="{{ $item['Datum']}}">
-                                    <input type="hidden" name="dateID" value="{{ $item['ID']}}">
-                                    <button class="btn btn-link" type="submit">(Neu)</button>
-                            </form>
-                        </td>
-                        <td class="tg-0lax withSub">
+                        <td class="tg-baqh" style="width: 90px; height: 45px; padding:0 15px;">{{ $key }}</td>
+                        <td class="tg-0lax withSub" style="width: 300px; vertical-align:middle;">
                          
                             <?php $hours = $item['Aufgaben']; ?>
                             <table class="subTable tasks">
@@ -303,25 +226,31 @@
                                 @endforeach
                             </table>
                         </td>
-                        <td class="tg-baqh ">{{ $date }}</td>
-                        <td class="tg-baqh widthSub">
+                        <td class="tg-baqh " style="width: 90px">{{ $date }}</td>
+                        <td class="tg-baqh widthSub" style="width: 120px">
                             <table class="subTable">
                                 @foreach ($hours as $key => $item)
                                 @if ($item)
-                                <tr clasS="td--noBorder">
+                                <tr clasS="td--noBorder" style="text-align: center">
                                     <td clasS="td--noBorder">{{ $item }}</td>
                                 </tr>
                                 @endif
                                 @endforeach
                             </table>
                         </td>
-                        <td class="tg-baqh ">8</td>
-                        </tr>
+                        @if($key == 'Samstag' || $key == 'Sonntag' )
+                        <td class="tg-baqh " style="width: 80px"></td>
+                        @else
+                        <td class="tg-baqh " style="width: 80px">8</td>
+                        @endif
                     </tr>
                   
                 @endforeach
                 
-                </table>
+            </table>
+
+          </div>
+            
 <div class="fullWidth">
     <div class="absolut absolut--right"><span>Anzahl h gesamt: </span><span class="hours">40</span></div>
 </div>
@@ -331,11 +260,9 @@
 
 <div class="fullWidth signs">
     <div class="half">Auszubildender<br><div class="signBox"></div></div>
-    <div class="half">Ausbilder<br><div class="signBox"></div></div>
-</div>
+    <div class="half" style="float:right;">Ausbilder<br><div class="signBox"></div></div>
 </div>
 
 
-      <script src="/public/js/app.js"></script>
 </body>
 </html>

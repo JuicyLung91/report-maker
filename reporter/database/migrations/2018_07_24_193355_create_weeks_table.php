@@ -18,8 +18,8 @@ class CreateWeeksTable extends Migration
             $table->increments('IDweeks');
             $table->unsignedInteger('startDate')->unique();
             $table->unsignedInteger('endDate')->unique();
-            $table->string('schoolDate');
-            $table->string('schoolDayName');
+            $table->string('schoolDate')->nullable();
+            $table->string('schoolDayName')->nullable();
             $table->integer('workingDays');
             $table->integer('trainingYear');
             $table->foreign('startDate')->references('IDdates')->on('dates');

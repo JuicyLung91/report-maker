@@ -8,13 +8,28 @@
 require('./bootstrap');
 
 
+console.log('test');
+$(function() {
+  console.log('test');
+  attach_delete();
+  $('.openModal').on('click', function(e) {
+    console.log(e);
+    var index = $(this).data('dayid');
+    showModal(index, 'dayid');
+  });
+});
 
-//Clone the hidden element and shows it
+
+function showModal(id, dataname) {
+  console.log('modal', $('.modal['+dataname+'='+id+']'));
+  $('.modal[data-'+dataname+'='+id+']').show();
+}
+//Clone the hidden element and show it
 $('.add-one').click(function(){
   
   var thisForm = $(this).closest('form');
   var thisdynamic = $(this).closest('.dynamic-elements');
-  thisdynamic.find('.row').first().clone().appendTo(thisdynamic).show();
+  thisdynamic.find('.row').first().clone(true).appendTo(thisdynamic).show();
   thisdynamic.find('.row').last().find('.btn').toggleClass('btn-primary btn-danger delete').text('-');
   attach_delete();
   create_name_attributes(thisForm);
@@ -28,6 +43,7 @@ function attach_delete(){
     create_name_attributes();
   });
 }
+
 
 function create_name_attributes(form) {
   var data = $(form).data('getname');

@@ -8,11 +8,12 @@ use App\tasksHours;
 use App\oneDay;
 use App\daysToTasks;
 use App\date;
+use Carbon\Carbon;
 
 class tasksAndHours extends Controller
 {
     /**
-     * adds on period of time
+     * adds one period of time
      * 
      * @param startdate date
      * @param enddate date
@@ -28,6 +29,79 @@ class tasksAndHours extends Controller
         return redirect()->back();
     }
 
+    public function updateTask(Request $request) {
+        // echo 'test';
+        if ( count($request['task']) == 0 || $request['task'][0]['name'] == '') {
+            return 'Es wurden keine Aufgaben hinterlegt';
+        }
+
+        $tasks = $request['task'];
+        $taskHours = 0;
+        foreach ($tasks as $task) {
+            $taskHours += $task['hour'];
+            if ($taskHours > 8) {
+                return 'Die Zahl der Aufgaben übersteigt 8 Stunden';
+            }
+        }
+        $schooltask = $request['schoolday'] ? 1 : 0;
+
+
+        $day = $request['dayid'];
+        print_r($tasks);
+        $task = new tasksAndHours();
+        $task->removeTaskForOneDay($request['dayid']);
+        foreach ($tasks as $task) {
+            $hourID = tasksHours::where('hour', $task['hour'])->first()->IDtaskHours;
+            $taskDescirption = $task['name'];
+            // echo $hourID;
+            //where time = $hourID and description = $task['name']
+            $task = tasks::where('time', $hourID)->where('description', $taskDescirption)->first();
+            if ($task) {
+                $newTask = $task->IDtasks;
+               
+            } else {
+                $task = new tasks();
+                $task->name = $taskDescirption;
+                $task->description = $taskDescirption;
+                $task->schoolTask = $schooltask;
+                $task->time = $hourID;
+                $task->save();
+                $newTask = tasks::where('time', $hourID)->where('description', $taskDescirption)->first()->IDtasks;
+                echo 'newtask: '.$newTask;
+            }
+
+            if ($newTask) {
+                echo '<br>Aufgabenid:'.$newTask.'<br>';
+                $dayTask = new daysToTasks();
+                $dayTask->oneDay = $day;
+                $dayTask->task = $newTask;
+                $dayTask->save();
+            }
+
+            
+        }
+        
+        return redirect()->back();
+
+    }
+
+    public function removeTaskForOneDay($dayid) {
+        echo 'dayid'.$dayid.'<br>';
+        $tasks = daysToTasks::where('oneDay', $dayid)->delete();
+        return true;
+    }
+
+    public function generateSingleDay (Request $request) {
+
+        $dateID = $request['dateID'];
+        $oneDayID = oneDay::where('date',$dateID)->firstOrFail()->IDoneDay;
+        $this->removeTaskForOneDay($oneDayID);
+
+        $day = oneDay::where('date', $dateID)->first();
+        $this->randomizeDaysToTasks($day);
+
+        return redirect()->back();
+    }
 
     public function generateTasks ($week = false) {
         if (!$week) {
@@ -96,7 +170,7 @@ class tasksAndHours extends Controller
                     $whereClause = $before;
                 }
                 $whereClause[] = ['time', $taskHour];
-                $task = tasks::where($whereClause)->inRandomOrder()->first();
+                $task = tasks::where($whereClause)->where('schooltask', 0)->inRandomOrder()->first();
                 
 
                 $thisTasksDuration = tasksHours::where('IDtaskHours', $task->time)->first()->hour;

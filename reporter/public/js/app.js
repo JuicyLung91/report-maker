@@ -13705,7 +13705,22 @@ module.exports = __webpack_require__(36);
 
 __webpack_require__(12);
 
-//Clone the hidden element and shows it
+console.log('test');
+$(function () {
+  console.log('test');
+  attach_delete();
+  $('.openModal').on('click', function (e) {
+    console.log(e);
+    var index = $(this).data('dayid');
+    showModal(index, 'dayid');
+  });
+});
+
+function showModal(id, dataname) {
+  console.log('modal', $('.modal[' + dataname + '=' + id + ']'));
+  $('.modal[data-' + dataname + '=' + id + ']').show();
+}
+//Clone the hidden element and show it
 $('.add-one').click(function () {
 
   var thisForm = $(this).closest('form');
