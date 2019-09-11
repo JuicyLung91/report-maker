@@ -113,6 +113,17 @@
                 .subTable tr:last-of-type td {
                     border-bottom: none;
                 }
+                .modal {
+                    background-color: rgba(60, 58, 58, 0.41);
+                }
+                .modal_content {
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    width: 410px;
+                    margin: 0 auto;
+                    margin-top: 4rem;
+                }
                 @media print
                 {    
                     .noPrint, .noPrint *
@@ -166,8 +177,12 @@
 <div class="container noPrint">
     <div class="row">
         <div class="col-sm-9">
+            <div><a href="http://localhost:8100/public/weeks/{{ $week['Wochennummer'] - 1 }}">zurück</a></div>
+            <div><a href="http://localhost:8100/public/weeks/{{ $week['Wochennummer'] + 1 }}">weiter</a></div>
             @foreach ($week['tage'] as $key => $item)
                 <form style="display-none" action="{{ route('update.tasks') }}" data-getname="task" method="GET" data-dayid="{{ $item['ID']}}" class="modal needs-validation" novalidate>
+                    <div class="modal_content">
+                        <div class="closeModal">x</div>
                     @if ($item['Schultag']) 
                         <h4 class="display-4">Schultag:</h4>
                         <input type="hidden" name="schoolday" value="1">
@@ -213,6 +228,7 @@
                         </div>
                     @endif
                     <button class="btn btn-primary" type="submit">Tag Bearbeiten</button>
+                    </div>
                 </form>
             @endforeach
         </div>

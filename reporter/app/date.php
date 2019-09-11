@@ -74,6 +74,7 @@ class date extends Model
                 }
             }
         }
+
         $week = new weeks;
         $week->saveWeeks($weeks, $trainingYear);
         $oneDay = new date;

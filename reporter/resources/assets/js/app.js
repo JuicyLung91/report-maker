@@ -13,17 +13,27 @@ $(function() {
   console.log('test');
   attach_delete();
   $('.openModal').on('click', function(e) {
-    console.log(e);
     var index = $(this).data('dayid');
     showModal(index, 'dayid');
+  });
+
+
+  $('.closeModal').on('click', function(e) {
+    console.log($('.modal--opened'));
+    $('.modal--opened').hide();
+    $('.modal--opened').removeClass('modal--opened');
   });
 });
 
 
 function showModal(id, dataname) {
-  console.log('modal', $('.modal['+dataname+'='+id+']'));
+  console.log('open');
+  console.log('modal', $('.modal[data-'+dataname+'='+id+']'));
+  $('.modal[data-'+dataname+'='+id+']').addClass('modal--opened');
   $('.modal[data-'+dataname+'='+id+']').show();
 }
+
+
 //Clone the hidden element and show it
 $('.add-one').click(function(){
   

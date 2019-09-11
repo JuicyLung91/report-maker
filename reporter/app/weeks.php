@@ -69,9 +69,10 @@ class weeks extends Model
 
 
             
+            print_r($week);
+            $weekStartID = date::where('date', $week['start'])->firstOrFail();
+            $weekEndID = date::where('date', $week['end'])->firstOrFail();
 
-            $weekStartID = date::where('date', $week['start'])->first();
-            $weekEndID = date::where('date', $week['end'])->first();
 
             weeks::updateOrCreate([
                 'startDate'=> $weekStartID->IDdates,
